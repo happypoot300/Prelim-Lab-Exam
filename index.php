@@ -8,7 +8,9 @@ if (!isset($_SESSION['inventory'])) {
     $_SESSION['inventory'] = [];
 }
 
+
 // --{Condition to add items in inventory array}--
+$system_message = "";
 if (isset($_POST['add_item'])) {
     //trim the item_name input
     $item_name = trim($_POST['item_name']);
@@ -37,6 +39,7 @@ if (isset($_POST['add_item'])) {
 } //end if
 
 // --{Condition to search items in inventory array}--
+$search_result = "";
 if (isset($_POST['search_item'])) {
     //trim the item name input
     $search_name = trim($_POST['search_name']);
