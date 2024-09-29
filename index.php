@@ -1,51 +1,54 @@
 <?php
+//to retain data even if nag reload
 session_start();
 
-// check if inventory array already exist
+// check if the session variable array called "inventory" is already initalized
 if (!isset($_SESSION['inventory'])) {
+    // if not, initialize it
     $_SESSION['inventory'] = [];
 }
 
-$system_message = "";
-$search_result = "";
-
-// Add item to inventory
+// --{Condition to add items in inventory array}--
 if (isset($_POST['add_item'])) {
+    //trim the item_name input
     $item_name = trim($_POST['item_name']);
+    //convert the quantity input to int
     $quantity = intval($_POST['quantity']);
 
-    // Validation rules
+    // --{Validation rules}--
+    // if no item name
     if ($item_name == "") {
         $system_message = "Item name cannot be blank.";
+
+        //if that item already exists in invetory array
     } elseif (array_key_exists($item_name, $_SESSION['inventory'])) {
         $system_message = "Item already exists in the inventory.";
+
+        //if the quantity input is less than 0 
     } elseif ($quantity <= 0) {
         $system_message = "Quantity must be greater than zero.";
+
+        //add to inventory if all the condition above is not triggered
     } else {
-        // Add to inventory
+        //add to inventory, item name with its corresponding quantity
         $_SESSION['inventory'][$item_name] = $quantity;
         $system_message = '<p style="color:green">Item added successfully.</p>';
     }
-}
+} //end if
 
-// Search item in inventory
+// --{Condition to search items in inventory array}--
 if (isset($_POST['search_item'])) {
+    //trim the item name input
     $search_name = trim($_POST['search_name']);
+
+    //check if that item exists in inventory
     if (array_key_exists($search_name, $_SESSION['inventory'])) {
+        //if found then display the item name and its quantity
         $search_result = ("Item: " . $search_name . " <br> Quantity: " . $_SESSION['inventory'][$search_name]);
     } else {
         $search_result = "Product not found.";
     }
-}
-
-if (isset($_POST['search_item'])) {
-    $search_name = trim($_POST['search_name']);
-    if (array_key_exists($search_name, $_SESSION['inventory'])) {
-        $search_result = ("Item: " . $search_name . " <br> Quantity: " . $_SESSION['inventory'][$search_name]);
-    } else {
-    }
-}
-
+} //end if
 ?>
 
 <!DOCTYPE html>
